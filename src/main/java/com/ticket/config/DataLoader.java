@@ -16,10 +16,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(userRepository.count() == 0){
+        if (userRepository.count() == 0) {
             User testUser = new User();
             testUser.setUsername("testuser");
-            testUser.setEmail("test@example.com");
             testUser.setPassword("test123");
             userRepository.save(testUser);
             System.out.println("Test user saved in MongoDB!");
