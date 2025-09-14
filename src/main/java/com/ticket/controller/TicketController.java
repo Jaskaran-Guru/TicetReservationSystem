@@ -17,19 +17,19 @@ public class TicketController {
     @Autowired
     private TicketRepository ticketRepository;
 
-    // Get all tickets of a user
+
     @GetMapping("/user/{username}")
     public List<Ticket> getTicketsByUser(@PathVariable String username) {
         return ticketRepository.findByUsername(username);
     }
 
-    // Add new ticket
+
     @PostMapping
     public Ticket addTicket(@RequestBody Ticket ticket) {
         return ticketRepository.save(ticket);
     }
 
-    // Update ticket
+
     @PutMapping("/{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable String id, @RequestBody Ticket ticketDetails) {
         Optional<Ticket> optionalTicket = ticketRepository.findById(id);
@@ -51,15 +51,15 @@ public class TicketController {
         ticket.setUsername(ticketRequest.getUsername());
         ticket.setSeat(ticketRequest.getSeat());
 
-        // NEW: set price (fixed example, ya calculate dynamically)
-        ticket.setPrice(200.0); // Example fixed price
+
+        ticket.setPrice(200.0);
 
         ticketRepository.save(ticket);
         return ResponseEntity.ok("Ticket booked with price: " + ticket.getPrice());
     }
 
 
-    // Delete ticket
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTicket(@PathVariable String id) {
         if (!ticketRepository.existsById(id)) {
@@ -69,7 +69,7 @@ public class TicketController {
         return ResponseEntity.ok().build();
     }
 
-    // Optional: get all tickets (for testing)
+
     @GetMapping
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();

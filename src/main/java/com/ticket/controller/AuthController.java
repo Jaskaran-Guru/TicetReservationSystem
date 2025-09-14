@@ -5,9 +5,9 @@ import com.ticket.repository.UserRepository;
 import com.ticket.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -20,31 +20,35 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // Register new user
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user) {
         if (userRepo.findByUsername(user.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Username already exists"));
         }
 
-        // Optionally, hash password here before saving
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
         return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
-    // Login user
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         User dbUser = userRepo.findByUsername(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
 
-        if (!dbUser.getPassword().equals(user.getPassword())) {
+
+        if (!passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
             return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
         }
 
         String token = jwtUtil.generateToken(user.getUsername());
-
         return ResponseEntity.ok(Map.of("token", token));
     }
 }

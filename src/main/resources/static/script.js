@@ -14,21 +14,94 @@ let appState = {
 
 // Enhanced train data with more realistic pricing and categories
 const trainData = {
+    // Premium
     "Vande Bharat Express": { price: 2500, category: "Premium" },
-    "Shatabdi Express": { price: 1800, category: "Express" },
     "Rajdhani Express": { price: 2200, category: "Premium" },
+    "Tejas Express": { price: 2400, category: "Premium" },
+    "Gatimaan Express": { price: 2300, category: "Premium" },
+
+    // Express
+    "Shatabdi Express": { price: 1800, category: "Express" },
     "Duronto Express": { price: 1500, category: "Express" },
+    "Sampark Kranti Express": { price: 1200, category: "Express" },
+    "Humsafar Express": { price: 1600, category: "Express" },
+
+    // Economy
     "Garib Rath Express": { price: 800, category: "Economy" },
     "Jan Shatabdi Express": { price: 600, category: "Economy" },
+    "Antyodaya Express": { price: 500, category: "Economy" },
+    "Uday Express": { price: 700, category: "Economy" },
+
+    // Regular
     "Intercity Express": { price: 400, category: "Regular" },
-    "Local Passenger": { price: 150, category: "Local" }
+    "Mail Express": { price: 350, category: "Regular" },
+    "Superfast Express": { price: 450, category: "Regular" },
+    "Double Decker Express": { price: 550, category: "Regular" },
+
+    // Local
+    "Local Passenger": { price: 150, category: "Local" },
+    "MEMU Train": { price: 120, category: "Local" },
+    "DEMU Train": { price: 100, category: "Local" },
+    "Suburban Local": { price: 80, category: "Local" }
 };
 
+
 const stationData = [
-    "New Delhi", "Mumbai Central", "Chennai Central", "Kolkata",
-    "Bangalore City", "Hyderabad", "Pune", "Ahmedabad",
-    "Jaipur", "Lucknow", "Kanpur", "Nagpur"
+    // Delhi
+    "New Delhi", "Old Delhi", "Anand Vihar", "Hazrat Nizamuddin",
+
+    // Mumbai
+    "Mumbai Central", "Chhatrapati Shivaji Maharaj Terminus", "Dadar", "Bandra Terminus",
+
+    // Chennai
+    "Chennai Central", "Chennai Egmore", "Tambaram",
+
+    // Kolkata
+    "Kolkata", "Howrah Junction", "Sealdah", "Shalimar",
+
+    // Karnataka
+    "Bangalore City", "Yesvantpur Junction", "Bangalore Cantonment",
+    "Krishnarajapuram", "Mysuru Junction", "Hubballi Junction",
+    "Belagavi", "Dharwad", "Ballari Junction", "Hospet Junction",
+    "Mangalore Junction", "Udupi", "Karwar", "Bijapur", "Gadag Junction",
+
+    // Hyderabad
+    "Hyderabad", "Secunderabad", "Kacheguda",
+
+    // Pune & Gujarat
+    "Pune", "Ahmedabad", "Surat", "Vadodara", "Rajkot",
+
+    // Rajasthan
+    "Jaipur", "Jodhpur", "Udaipur City", "Ajmer", "Bikaner",
+
+    // Uttar Pradesh
+    "Lucknow", "Varanasi Junction", "Gorakhpur", "Allahabad (Prayagraj)", "Kanpur",
+
+    // Madhya Pradesh & Maharashtra
+    "Nagpur", "Bhopal", "Indore", "Jabalpur",
+
+    // Bihar & Jharkhand
+    "Patna", "Gaya", "Darbhanga", "Dhanbad",
+
+    // Punjab
+    "Amritsar Junction", "Ludhiana Junction", "Jalandhar City", "Firozpur Cantonment",
+    "Pathankot Junction", "Bathinda Junction", "Phagwara Junction", "Hoshiarpur",
+    "Muktsar", "Rajpura Junction", "Khanna", "Sunam",
+
+    // Chandigarh & Haryana
+    "Chandigarh", "Ambala Cantt", "Panipat", "Karnal",
+
+    // Uttarakhand & Himachal
+    "Dehradun", "Haridwar", "Shimla",
+
+    // Odisha, Assam, Chhattisgarh
+    "Ranchi", "Guwahati", "Bhubaneswar", "Raipur", "Bilaspur",
+
+    // South India
+    "Coimbatore", "Madurai", "Thiruvananthapuram", "Ernakulam",
+    "Vijayawada", "Visakhapatnam", "Guntur", "Tirupati"
 ];
+
 
 // Utility Functions
 const utils = {

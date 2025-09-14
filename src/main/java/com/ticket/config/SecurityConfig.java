@@ -29,13 +29,13 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .anyRequest().permitAll() // ✅ allow all requests
+                .anyRequest().permitAll()
                 .and()
-                .headers().frameOptions().disable() // allow H2 console
+                .headers().frameOptions().disable()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // JWT filter is still added but won't block requests
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

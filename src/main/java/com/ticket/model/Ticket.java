@@ -13,7 +13,7 @@ public class Ticket {
     private String destination;
     private String seat;
 
-    // NEW: Price field
+
     private double price;
 
     public Ticket() {}
@@ -25,7 +25,7 @@ public class Ticket {
         this.destination = destination;
     }
 
-    // Getters & Setters
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
