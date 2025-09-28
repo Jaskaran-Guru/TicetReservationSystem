@@ -1,0 +1,17 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: booking-api-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/waygonway_db
+      auto-index-creation: true
+
+logging:
+  level:
+    com.waygonway: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

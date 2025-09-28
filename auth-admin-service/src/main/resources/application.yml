@@ -1,0 +1,75 @@
+# WaygonWay Auth Admin Service Configuration
+server:
+  port: 8081
+  servlet:
+    context-path: /
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: auth-admin-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/waygonway_db
+      auto-index-creation: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    default-property-inclusion: NON_NULL
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  security:
+    user:
+      name: admin
+      password: admin123
+
+# JWT Configuration
+jwt:
+  secret: WaygonWaySecretKeyForTokenGeneration2024!@#$%
+  expiration: 86400000  # 24 hours in milliseconds
+  issuer: WaygonWay-AuthService
+  header: Authorization
+  prefix: Bearer
+
+# Logging Configuration
+logging:
+  level:
+    com.waygonway: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.springframework.data.mongodb: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/auth-admin-service.log
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,loggers
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+# Application Info
+info:
+  app:
+    name: WaygonWay Auth Admin Service
+    description: Authentication and User Management Service
+    version: 1.0.0
+    developer: WaygonWay Team
+  build:
+    artifact: auth-admin-service
+    group: com.waygonway

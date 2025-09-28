@@ -1,0 +1,17 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: database-service
+
+  profiles:
+    include: common
+
+  data:
+    mongodb:
+      database: train_reservation_db
+
+logging:
+  level:
+    com.waygonway.database: DEBUG
