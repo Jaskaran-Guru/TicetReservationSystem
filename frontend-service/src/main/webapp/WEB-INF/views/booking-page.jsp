@@ -8,42 +8,46 @@
     <title>${pageTitle}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #0a0f2e;
-            --royal: #1a2b6b;
-            --cobalt: #1e3a8a;
-            --azure: #2563eb;
-            --sky: #3b82f6;
-            --ice: #93c5fd;
-            --gold: #f59e0b;
-            --gold-light: #fcd34d;
+            --deep-plum: #1a0b2e;
+            --royal-purple: #2d1b4e;
+            --midnight: #16213e;
+            --teal: #0f4c75;
+            --ocean: #3282b8;
+            --aqua: #4da8da;
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --rose-gold: #b76e79;
             --emerald: #10b981;
-            --emerald-dim: rgba(16,185,129,0.12);
+            --emerald-light: #34d399;
+            --cream: #fef6e4;
             --white: #ffffff;
-            --glass: rgba(255,255,255,0.05);
-            --glass-border: rgba(255,255,255,0.1);
-            --text-muted: rgba(255,255,255,0.45);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-muted: rgba(254, 246, 228, 0.6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--navy);
-            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--deep-plum) 0%, var(--midnight) 50%, var(--teal) 100%);
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            padding-top: 76px;
+            padding-top: 85px;
+            position: relative;
         }
 
+        /* ─── Background Effects ─── */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(ellipse 70% 55% at 10% 5%, rgba(37,99,235,0.38) 0%, transparent 60%),
-                radial-gradient(ellipse 55% 65% at 90% 90%, rgba(30,58,138,0.4) 0%, transparent 55%),
-                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(10,15,46,0.85) 0%, transparent 100%);
+                radial-gradient(circle at 20% 15%, rgba(212, 175, 55, 0.09) 0%, transparent 50%),
+                radial-gradient(circle at 80% 75%, rgba(50, 130, 184, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(45, 27, 78, 0.6) 0%, transparent 100%);
             z-index: 0;
             pointer-events: none;
         }
@@ -55,24 +59,26 @@
             background-image:
                 linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background-size: 50px 50px;
             z-index: 0;
             pointer-events: none;
+            opacity: 0.4;
         }
 
         /* ─── Navbar ─── */
         .navbar {
-            background: rgba(10,15,46,0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 0.85rem 0;
+            background: rgba(26, 11, 46, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .navbar-brand {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 800;
-            font-size: 1.5rem !important;
+            font-size: 1.6rem !important;
             color: var(--white) !important;
             letter-spacing: -0.5px;
             display: flex;
@@ -81,64 +87,78 @@
         }
 
         .navbar-brand .brand-icon {
-            width: 34px;
-            height: 34px;
-            background: linear-gradient(135deg, var(--azure), var(--gold));
-            border-radius: 9px;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--rose-gold) 100%);
+            border-radius: 11px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            color: var(--deep-plum);
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
 
         .nav-link {
-            color: rgba(255,255,255,0.65) !important;
-            font-size: 0.88rem;
-            padding: 0.4rem 0.9rem !important;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            color: rgba(255,255,255,0.75) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
 
         .nav-link:hover {
-            color: var(--white) !important;
-            background: var(--glass);
+            color: var(--gold-light) !important;
+            background: rgba(212, 175, 55, 0.1);
         }
 
         .btn-nav-search {
-            background: linear-gradient(135deg, var(--azure), var(--sky));
+            background: linear-gradient(135deg, var(--ocean), var(--aqua));
             border: none;
             color: white !important;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            padding: 0.42rem 1.1rem;
-            border-radius: 8px;
-            transition: all 0.25s ease;
+            padding: 0.5rem 1.4rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
             text-decoration: none;
+            box-shadow: 0 4px 15px rgba(50, 130, 184, 0.25);
         }
 
         .btn-nav-search:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(37,99,235,0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(50, 130, 184, 0.35);
         }
 
         /* ─── Container ─── */
-        .container { position: relative; z-index: 1; padding-top: 2.5rem; padding-bottom: 3rem; }
+        .container { 
+            position: relative; 
+            z-index: 1; 
+            padding-top: 3rem; 
+            padding-bottom: 3.5rem; 
+        }
 
         /* ─── Page Header ─── */
-        .page-header { text-align: center; margin-bottom: 2.2rem; animation: fade-up 0.5s ease both; }
+        .page-header { 
+            text-align: center; 
+            margin-bottom: 2.5rem; 
+            animation: fade-up 0.6s ease both; 
+        }
 
         .page-header h2 {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 800;
-            font-size: 2rem;
+            font-size: 2.4rem;
             color: var(--white);
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
         }
 
         .page-header p {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
         }
 
         /* ─── Step Indicator ─── */
@@ -147,8 +167,8 @@
             justify-content: center;
             align-items: center;
             gap: 0;
-            margin-bottom: 2rem;
-            animation: fade-up 0.5s ease 0.05s both;
+            margin-bottom: 2.8rem;
+            animation: fade-up 0.6s ease 0.1s both;
         }
 
         .step-wrapper {
@@ -157,333 +177,430 @@
         }
 
         .step {
-            width: 42px;
-            height: 42px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
         }
 
         .step.active {
-            background: linear-gradient(135deg, var(--azure), var(--sky));
+            background: linear-gradient(135deg, var(--ocean), var(--aqua));
             color: white;
-            box-shadow: 0 0 0 4px rgba(59,130,246,0.2);
+            box-shadow: 0 0 0 4px rgba(50, 130, 184, 0.2), 0 8px 20px rgba(50, 130, 184, 0.3);
         }
 
         .step.inactive {
-            background: rgba(255,255,255,0.07);
-            border: 1px solid var(--glass-border);
-            color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            color: rgba(254, 246, 228, 0.4);
         }
 
         .step-line {
-            width: 60px;
-            height: 1px;
-            background: rgba(255,255,255,0.1);
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.2), rgba(50, 130, 184, 0.2));
         }
 
         /* ─── Train Info Banner ─── */
         .train-info {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(59,130,246,0.25);
-            border-radius: 20px;
-            padding: 1.6rem 2rem;
-            margin-bottom: 1.8rem;
+            background: linear-gradient(135deg, rgba(50, 130, 184, 0.08), rgba(77, 168, 218, 0.04));
+            border: 1.5px solid rgba(77, 168, 218, 0.3);
+            border-radius: 24px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 2.2rem;
             position: relative;
             overflow: hidden;
-            animation: fade-up 0.55s ease 0.1s both;
+            animation: fade-up 0.7s ease 0.15s both;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
         .train-info::before {
             content: '';
             position: absolute;
             left: 0; top: 0; bottom: 0;
-            width: 4px;
-            background: linear-gradient(180deg, var(--azure), var(--sky));
-            border-radius: 4px 0 0 4px;
+            width: 5px;
+            background: linear-gradient(180deg, var(--ocean), var(--aqua));
+            border-radius: 5px 0 0 5px;
         }
 
         .train-info h4 {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
             color: var(--white);
-            font-size: 1.15rem;
-            margin-bottom: 6px;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .train-info p {
-            color: rgba(255,255,255,0.55);
-            font-size: 0.88rem;
+            color: rgba(254, 246, 228, 0.65);
+            font-size: 0.95rem;
             margin-bottom: 4px;
         }
 
         .train-info h6 {
-            color: rgba(255,255,255,0.45);
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .train-info .fare-highlight {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 800;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: var(--gold-light);
+            letter-spacing: -0.5px;
         }
 
         .train-info .dep-time {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--white);
+            letter-spacing: -0.5px;
         }
 
         /* ─── Booking Card ─── */
         .booking-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 28px;
+            padding: 3rem 3.5rem;
             margin-bottom: 2rem;
             box-shadow:
-                0 0 0 1px rgba(255,255,255,0.04),
-                0 28px 70px rgba(0,0,0,0.38),
-                inset 0 1px 0 rgba(255,255,255,0.07);
-            animation: fade-up 0.6s ease 0.15s both;
+                0 0 0 1px rgba(255,255,255,0.05),
+                0 30px 90px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            animation: fade-up 0.8s ease 0.2s both;
         }
 
         /* ─── Section Headings ─── */
         .section-heading {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 1.4rem;
+            gap: 14px;
+            margin-bottom: 1.8rem;
         }
 
         .section-heading .s-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 1rem;
             flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .section-heading .s-icon.blue  { background: rgba(59,130,246,0.15); color: var(--ice); }
-        .section-heading .s-icon.green { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+        .section-heading .s-icon.blue {
+            background: linear-gradient(135deg, rgba(77, 168, 218, 0.2), rgba(50, 130, 184, 0.15));
+            color: var(--aqua);
+        }
+
+        .section-heading .s-icon.green {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.15));
+            color: var(--emerald-light);
+        }
 
         .section-heading h5 {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
             color: var(--white);
-            font-size: 1rem;
+            font-size: 1.2rem;
             margin: 0;
+            letter-spacing: -0.3px;
         }
 
         .section-divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-            margin: 1.8rem 0;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+            margin: 2.2rem 0;
+            position: relative;
+        }
+
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--gold);
         }
 
         /* ─── Form Elements ─── */
         .form-label {
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 7px;
+            color: var(--gold-light);
+            margin-bottom: 8px;
         }
 
         .form-control, .form-select {
-            background: rgba(255,255,255,0.06) !important;
-            border: 1px solid rgba(255,255,255,0.1) !important;
-            border-radius: 12px !important;
-            padding: 13px 18px !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.25) !important;
+            border-radius: 14px !important;
+            padding: 14px 20px !important;
             color: var(--white) !important;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.92rem !important;
-            transition: all 0.22s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        .form-control::placeholder { color: rgba(255,255,255,0.25) !important; }
+        .form-control::placeholder { 
+            color: rgba(254, 246, 228, 0.35) !important; 
+            font-weight: 400;
+        }
 
         .form-control:focus, .form-select:focus {
-            background: rgba(255,255,255,0.09) !important;
-            border-color: rgba(59,130,246,0.55) !important;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.14) !important;
+            background: rgba(255, 255, 255, 0.12) !important;
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15) !important;
+            outline: none;
         }
 
-        .form-select option { background: #111827; color: var(--white); }
+        .form-select option { 
+            background: var(--deep-plum); 
+            color: var(--white); 
+            padding: 12px;
+        }
 
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.65); cursor: pointer; }
+        input[type="date"]::-webkit-calendar-picker-indicator { 
+            filter: invert(0.7) sepia(1) saturate(5) hue-rotate(10deg);
+            cursor: pointer;
+        }
 
         .form-control.is-invalid {
-            border-color: rgba(239,68,68,0.5) !important;
-            box-shadow: 0 0 0 3px rgba(239,68,68,0.12) !important;
+            border-color: rgba(239, 68, 68, 0.6) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
         }
 
         /* ─── Fare Breakdown ─── */
         .fare-breakdown {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 20px;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .fare-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 0.88rem;
-            color: rgba(255,255,255,0.55);
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: rgba(254, 246, 228, 0.65);
         }
 
-        .fare-row span:last-child { color: rgba(255,255,255,0.8); font-weight: 500; }
+        .fare-row span:last-child { 
+            color: rgba(255,255,255,0.85); 
+            font-weight: 600; 
+        }
 
         .fare-total-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 12px;
-            margin-top: 4px;
-            border-top: 1px solid var(--glass-border);
+            padding-top: 16px;
+            margin-top: 8px;
+            border-top: 1.5px solid rgba(212, 175, 55, 0.25);
         }
 
         .fare-total-row .label {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             color: var(--white);
+            letter-spacing: -0.3px;
         }
 
         .fare-total-row .value {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 800;
-            font-size: 1.3rem;
-            color: #6ee7b7;
+            font-size: 1.6rem;
+            color: var(--emerald-light);
+            letter-spacing: -0.5px;
         }
 
         /* ─── Benefits List ─── */
         .benefits-list {
-            margin-top: 1.4rem;
-            padding-top: 1.2rem;
-            border-top: 1px solid var(--glass-border);
+            margin-top: 1.8rem;
+            padding-top: 1.5rem;
+            border-top: 1.5px solid rgba(212, 175, 55, 0.2);
         }
 
         .benefits-list .benefit-title {
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.35);
-            margin-bottom: 10px;
+            color: var(--gold-light);
+            margin-bottom: 12px;
         }
 
         .benefit-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.55);
-            margin-bottom: 7px;
+            gap: 10px;
+            font-size: 0.88rem;
+            color: rgba(254, 246, 228, 0.7);
+            margin-bottom: 10px;
+            font-weight: 500;
         }
 
         .benefit-item .check {
-            width: 18px;
-            height: 18px;
-            background: rgba(16,185,129,0.15);
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.15));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #34d399;
-            font-size: 0.6rem;
+            color: var(--emerald-light);
+            font-size: 0.7rem;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
         }
 
         /* ─── Checkboxes ─── */
         .form-check-input {
-            background-color: rgba(255,255,255,0.07) !important;
-            border-color: rgba(255,255,255,0.2) !important;
-            border-radius: 5px !important;
+            background-color: rgba(255,255,255,0.08) !important;
+            border: 1.5px solid rgba(212, 175, 55, 0.3) !important;
+            border-radius: 6px !important;
+            width: 20px;
+            height: 20px;
         }
 
         .form-check-input:checked {
-            background-color: var(--azure) !important;
-            border-color: var(--azure) !important;
+            background-color: var(--ocean) !important;
+            border-color: var(--ocean) !important;
         }
 
         .form-check-label {
-            color: rgba(255,255,255,0.5);
-            font-size: 0.82rem;
+            color: rgba(254, 246, 228, 0.65);
+            font-size: 0.88rem;
+            font-weight: 500;
         }
 
-        .form-check-label a { color: var(--ice); }
+        .form-check-label a { 
+            color: var(--aqua); 
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-check-label a:hover { 
+            color: var(--gold-light);
+        }
 
         /* ─── Book Button ─── */
         .btn-book {
             background: linear-gradient(135deg, var(--emerald) 0%, #059669 100%);
             border: none;
-            border-radius: 14px !important;
-            padding: 15px 28px !important;
-            font-family: 'Syne', sans-serif;
+            border-radius: 16px !important;
+            padding: 18px 32px !important;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: 0.8px;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
             color: white !important;
             text-transform: uppercase;
             width: 100%;
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.35);
         }
 
         .btn-book::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
+        .btn-book::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
         .btn-book:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 35px rgba(16,185,129,0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.45);
         }
 
         .btn-book:hover::before { opacity: 1; }
-        .btn-book:active { transform: translateY(0); }
+        
+        .btn-book:active { 
+            transform: translateY(-1px); 
+        }
+
+        .btn-book:active::after {
+            width: 300px;
+            height: 300px;
+        }
 
         /* ─── Alert ─── */
         .alert-danger {
-            background: rgba(239,68,68,0.1) !important;
-            border: 1px solid rgba(239,68,68,0.25) !important;
-            border-radius: 12px !important;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.08)) !important;
+            border: 1.5px solid rgba(239, 68, 68, 0.3) !important;
+            border-radius: 16px !important;
             color: #fca5a5 !important;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
         }
 
         /* ─── Animations ─── */
         @keyframes fade-up {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .booking-card { padding: 2rem 1.8rem; }
+            .container { padding-top: 2rem; }
+            .page-header h2 { font-size: 2rem; }
+            .train-info { padding: 1.5rem 1.8rem; }
+        }
+
+        @media (max-width: 576px) {
+            .booking-card { padding: 1.5rem 1.2rem; }
+            .train-info { padding: 1.2rem 1.5rem; }
         }
     </style>
 </head>
@@ -524,7 +641,7 @@
 
             <!-- Page Header -->
             <div class="page-header">
-                <h2><i class="fas fa-ticket-alt me-3" style="color:var(--ice)"></i>Book Your Ticket</h2>
+                <h2><i class="fas fa-ticket-alt me-3" style="color:var(--aqua)"></i>Book Your Ticket</h2>
                 <p>Step 1: Passenger Details</p>
             </div>
 
@@ -533,7 +650,7 @@
                 <div class="train-info">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <h4><i class="fas fa-train me-2" style="color:var(--ice)"></i>${selectedEvent.eventName}</h4>
+                            <h4><i class="fas fa-train me-2" style="color:var(--aqua)"></i>${selectedEvent.eventName}</h4>
                             <p class="mb-1">Train No: ${selectedEvent.eventCode}</p>
                             <p class="mb-0"><i class="fas fa-route me-2"></i>${selectedEvent.source} → ${selectedEvent.destination}</p>
                         </div>
