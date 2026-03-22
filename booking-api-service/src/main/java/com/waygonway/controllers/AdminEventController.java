@@ -1,101 +1,105 @@
 package com.waygonway.controllers;
 
 import com.waygonway.entities.Event;
-import com.waygonway.services.TrainBookingService;
+import com.waygonway.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/events")
+@RequestMapping("/api/v1/admin/events")
 @CrossOrigin(origins = "*")
 public class AdminEventController {
 
     @Autowired
-    private TrainBookingService trainBookingService;
+    private EventRepository eventRepository;
 
-    // Get All Events for Admin
-    @GetMapping("/all")
-    public Map<String, Object> getAllEvents() {
-        System.out.println("👨‍💼 Admin: Getting all events");
-
-        try {
-            List<Event> allEvents = trainBookingService.getAllEvents();
-            return Map.of("success", true, "data", allEvents, "count", allEvents.size());
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Failed to fetch events");
-        }
+    @GetMapping("/paged")
+    public Page<Event> getEventsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return eventRepository.findAll(pageable);
     }
 
-    // Add New Event
-    @PostMapping("/add")
-    public Map<String, Object> addEvent(@RequestBody Map<String, Object> eventData) {
-        System.out.println("➕ Admin: Adding new event - " + eventData);
-
-        try {
-            Event newEvent = trainBookingService.createEvent(eventData);
-            return Map.of("success", true, "data", newEvent, "message", "Event added successfully");
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Failed to add event: " + e.getMessage());
-        }
+    @PostMapping
+    public Event createEvent(@RequestBody Event event) {
+        return eventRepository.save(event);
     }
 
-    // Update Event
-    @PutMapping("/update/{id}")
-    public Map<String, Object> updateEvent(@PathVariable String id,
-                                           @RequestBody Map<String, Object> eventData) {
-        System.out.println("✏️ Admin: Updating event " + id + " - " + eventData);
-
-        try {
-            Event updatedEvent = trainBookingService.updateEvent(id, eventData);
-            return Map.of("success", true, "data", updatedEvent, "message", "Event updated successfully");
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Failed to update event: " + e.getMessage());
-        }
+    @PutMapping("/{id}")
+    public Event updateEvent(@PathVariable String id, @RequestBody Event eventDetails) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        
+        event.setEventName(eventDetails.getEventName());
+        event.setCategory(eventDetails.getCategory());
+        event.setVenue(eventDetails.getVenue());
+        event.setLocation(eventDetails.getLocation());
+        event.setDescription(eventDetails.getDescription());
+        event.setBasePrice(eventDetails.getBasePrice());
+        event.setAvailableSeats(eventDetails.getAvailableSeats());
+        event.setTotalSeats(eventDetails.getTotalSeats());
+        event.setStartDateTime(eventDetails.getStartDateTime());
+        event.setEndDateTime(eventDetails.getEndDateTime());
+        
+        return eventRepository.save(event);
     }
 
-    // Delete Event
-    @DeleteMapping("/delete/{id}")
-    public Map<String, Object> deleteEvent(@PathVariable String id) {
-        System.out.println("🗑️ Admin: Deleting event " + id);
-
-        try {
-            boolean deleted = trainBookingService.deleteEvent(id);
-            if (deleted) {
-                return Map.of("success", true, "message", "Event deleted successfully");
-            } else {
-                return Map.of("success", false, "error", "Event not found");
-            }
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Failed to delete event: " + e.getMessage());
-        }
+    @DeleteMapping("/{id}")
+    public Map<String, Boolean> deleteEvent(@PathVariable String id) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        
+        eventRepository.delete(event);
+        return Map.of("deleted", true);
     }
 
-    // Update Event Availability
-    @PatchMapping("/availability/{id}")
-    public Map<String, Object> updateEventAvailability(@PathVariable String id,
-                                                       @RequestParam int availableSeats) {
-        System.out.println("🎫 Admin: Updating availability for event " + id + " to " + availableSeats);
+    @PostMapping("/seed")
+    public Map<String, Object> seedDemoData() {
+        eventRepository.deleteAll();
 
-        try {
-            Event updatedEvent = trainBookingService.updateEventAvailability(id, availableSeats);
-            return Map.of("success", true, "data", updatedEvent, "message", "Availability updated");
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Failed to update availability: " + e.getMessage());
-        }
-    }
+        Event movie = new Event();
+        movie.setEventName("Inception: Special Screening");
+        movie.setCategory("Movies");
+        movie.setVenue("Grand Cinema Hall");
+        movie.setLocation("Los Angeles");
+        movie.setDescription("Experience Christopher Nolan's masterpiece on the big screen once again.");
+        movie.setBasePrice(15.0);
+        movie.setTotalSeats(100);
+        movie.setAvailableSeats(85);
+        movie.setStartDateTime(LocalDateTime.now().plusDays(2).withHour(20).withMinute(0));
 
-    // Create Demo Data
-    @PostMapping("/create-demo-data")
-    public Map<String, Object> createDemoData() {
-        System.out.println("🎯 Admin: Creating demo data");
+        Event concert = new Event();
+        concert.setEventName("The Midnight Echo - Live");
+        concert.setCategory("Concerts");
+        concert.setVenue("Starlight Arena");
+        concert.setLocation("New York");
+        concert.setDescription("A night of synth-pop and neon vibes.");
+        concert.setBasePrice(45.0);
+        concert.setTotalSeats(500);
+        concert.setAvailableSeats(120);
+        concert.setStartDateTime(LocalDateTime.now().plusDays(5).withHour(21).withMinute(0));
 
-        try {
-            List<Event> demoEvents = trainBookingService.createDemoData();
-            return Map.of("success", true, "data", demoEvents, "count", demoEvents.size(),
-                    "message", "Demo data created successfully");
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Failed to create demo data: " + e.getMessage());
-        }
+        Event comedy = new Event();
+        comedy.setEventName("Laugh Out Loud: Comedy Night");
+        comedy.setCategory("Comedy");
+        comedy.setVenue("The Joker's Den");
+        comedy.setLocation("Chicago");
+        comedy.setDescription("Five top-tier comedians, one hilarious night.");
+        comedy.setBasePrice(25.0);
+        comedy.setTotalSeats(80);
+        comedy.setAvailableSeats(40);
+        comedy.setStartDateTime(LocalDateTime.now().plusDays(3).withHour(19).withMinute(30));
+
+        eventRepository.saveAll(List.of(movie, concert, comedy));
+
+        return Map.of("success", true, "message", "Demo data seeded successfully");
     }
 }

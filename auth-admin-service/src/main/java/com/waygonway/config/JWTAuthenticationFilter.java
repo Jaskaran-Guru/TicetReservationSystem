@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
@@ -24,6 +23,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
+        System.out.println("🔍 JWT Filter: Processing " + method + " " + uri);
 
         try {
             String authHeader = request.getHeader("Authorization");
@@ -40,10 +43,17 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // ✅ CORRECT: Only pass token, not username
                 if (jwtUtil.validateToken(token)) {
+                    String role = jwtUtil.getRoleFromToken(token);
+                    java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new java.util.ArrayList<>();
+                    if (role != null) {
+                        // Spring Security expects ROLE_ prefix for hasRole()
+                        String roleName = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+                        authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(roleName));
+                    }
+
                     UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                            new UsernamePasswordAuthenticationToken(username, null, authorities);
 
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);

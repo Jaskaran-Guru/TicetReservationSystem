@@ -13,7 +13,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/waygonway_db
+      uri: mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
       auto-index-creation: true
 
   jackson:

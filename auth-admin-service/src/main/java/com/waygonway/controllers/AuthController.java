@@ -2,6 +2,7 @@ package com.waygonway.controllers;
 
 import com.waygonway.models.*;
 import com.waygonway.services.AuthService;
+import com.waygonway.services.UserService;
 import com.waygonway.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -291,6 +295,39 @@ public class AuthController {
             System.err.println("❌ AuthController: Username check failed - " + e.getMessage());
             return ResponseEntity.badRequest().body(
                     ApiResponse.error("Username check failed: " + e.getMessage())
+            );
+        }
+    }
+
+    // Delete user account (self-deletion)
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> deleteAccount(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable String userId) {
+        try {
+            System.out.println("🗑️ AuthController: Self-deletion request for - " + userId);
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                throw new RuntimeException("Invalid authorization header");
+            }
+
+            String token = authHeader.substring(7);
+            String tokenUserId = jwtUtil.extractUserId(token);
+
+            if (!tokenUserId.equals(userId)) {
+                throw new RuntimeException("You are not authorized to delete this account");
+            }
+
+            Map<String, Object> result = userService.deleteUser(userId);
+
+            return ResponseEntity.ok(
+                    ApiResponse.success("Account deleted successfully", result)
+            );
+
+        } catch (Exception e) {
+            System.err.println("❌ AuthController: Account deletion failed - " + e.getMessage());
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.error("Failed to delete account: " + e.getMessage())
             );
         }
     }

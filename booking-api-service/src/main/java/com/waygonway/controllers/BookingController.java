@@ -1,115 +1,61 @@
 package com.waygonway.controllers;
 
 import com.waygonway.entities.Booking;
-import com.waygonway.services.TrainBookingService;
+import com.waygonway.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/api/v1/bookings")
 @CrossOrigin(origins = "*")
 public class BookingController {
 
     @Autowired
-    private TrainBookingService trainBookingService;
+    private BookingService bookingService;
 
-    @Autowired(required = false) // Make it optional
-    private MongoTemplate mongoTemplate;
+    @GetMapping("/paged")
+    public Page<Booking> getAllBookingsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return bookingService.getAllBookingsPaged(PageRequest.of(page, size));
+    }
+
+    @PutMapping("/status/{pnr}")
+    public Map<String, Object> updateBookingStatus(@PathVariable String pnr, @RequestBody Map<String, String> statusData) {
+        try {
+            Booking booking = bookingService.updateBookingStatus(pnr, statusData.get("status"));
+            return Map.of("success", true, "data", booking);
+        } catch (Exception e) {
+            return Map.of("success", false, "error", e.getMessage());
+        }
+    }
 
     @PostMapping
     public Map<String, Object> createBooking(@RequestBody Map<String, Object> bookingData) {
-        System.out.println("📝 Creating booking: " + bookingData);
-
         try {
-            Booking booking = trainBookingService.createBooking(bookingData);
-            return Map.of("success", true, "data", booking, "message", "Booking successful");
+            Booking booking = bookingService.createBooking(bookingData);
+            return Map.of("success", true, "data", booking);
         } catch (Exception e) {
-            System.err.println("Booking error: " + e.getMessage());
-            return Map.of("success", false, "error", "Booking failed: " + e.getMessage());
+            return Map.of("success", false, "error", e.getMessage());
         }
     }
 
     @GetMapping("/pnr/{pnr}")
-    public Map<String, Object> getBookingByPNR(@PathVariable String pnr) {
-        try {
-            Booking booking = trainBookingService.getBookingByPNR(pnr);
-            if (booking != null) {
-                return Map.of("success", true, "data", booking);
-            } else {
-                return Map.of("success", false, "error", "PNR not found");
-            }
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Error retrieving booking");
-        }
+    public Map<String, Object> getBookingByPnr(@PathVariable String pnr) {
+        Optional<Booking> booking = bookingService.getBookingByPnr(pnr);
+        return booking.map(value -> Map.of("success", true, "data", value))
+                .orElseGet(() -> Map.of("success", false, "error", "Booking not found"));
     }
 
     @GetMapping("/user/{userId}")
     public Map<String, Object> getUserBookings(@PathVariable String userId) {
-        try {
-            List<Booking> bookings = trainBookingService.getUserBookings(userId);
-            return Map.of("success", true, "data", bookings, "count", bookings.size());
-        } catch (Exception e) {
-            return Map.of("success", false, "error", "Error retrieving user bookings");
-        }
-    }
-
-    @GetMapping("/debug")
-    public Map<String, Object> debugInfo() {
-        return trainBookingService.getDebugInfo();
-    }
-
-    @GetMapping("/test")
-    public Map<String, Object> testSave() {
-        Map<String, Object> testData = new HashMap<>();
-        testData.put("userId", "test123");
-        testData.put("passengerName", "Test Passenger");
-        testData.put("trainName", "Test Train");
-        testData.put("source", "Mumbai");
-        testData.put("destination", "Delhi");
-        testData.put("totalAmount", 1500.0);
-
-        Booking booking = trainBookingService.createBooking(testData);
-        return Map.of("success", true, "booking", booking);
-    }
-
-    @GetMapping("/mongodb-test")
-    public Map<String, Object> testMongoDB() {
-        if (mongoTemplate == null) {
-            return Map.of(
-                    "success", false,
-                    "mongoConnected", false,
-                    "error", "MongoDB not configured",
-                    "message", "Using file-based storage"
-            );
-        }
-
-        try {
-            // Count documents
-            long count = mongoTemplate.count(new Query(), Booking.class);
-
-            // Get all bookings
-            List<Booking> allBookings = mongoTemplate.findAll(Booking.class);
-
-            return Map.of(
-                    "success", true,
-                    "mongoConnected", true,
-                    "totalBookings", count,
-                    "bookings", allBookings
-            );
-        } catch (Exception e) {
-            return Map.of(
-                    "success", false,
-                    "mongoConnected", false,
-                    "error", e.getMessage()
-            );
-        }
-    }
-
-    @GetMapping("/health")
-    public Map<String, Object> healthCheck() {
-        return Map.of("success", true, "service", "Booking Controller", "status", "Running");
+        List<Booking> bookings = bookingService.getUserBookings(userId);
+        return Map.of("success", true, "data", bookings);
     }
 }

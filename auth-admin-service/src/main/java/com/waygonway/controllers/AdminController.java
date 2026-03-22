@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/v1/admin")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AdminController {
 
@@ -34,6 +34,30 @@ public class AdminController {
             System.err.println("❌ AdminController: Error getting users - " + e.getMessage());
             return ResponseEntity.badRequest().body(
                     ApiResponse.error("Failed to retrieve users: " + e.getMessage())
+            );
+        }
+    }
+
+    // Get users with pagination
+    @GetMapping("/users/paged")
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<User>>> getUsersPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+        try {
+            System.out.println("📋 AdminController: Getting paged users - Page: " + page + ", Size: " + size);
+
+            org.springframework.data.domain.Page<User> users = userService.getUsersWithPagination(page, size, sortBy, sortDir);
+
+            return ResponseEntity.ok(
+                    ApiResponse.success("Paged users retrieved successfully", users)
+            );
+
+        } catch (Exception e) {
+            System.err.println("❌ AdminController: Paged users error - " + e.getMessage());
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.error("Failed to retrieve paged users: " + e.getMessage())
             );
         }
     }
@@ -77,6 +101,29 @@ public class AdminController {
             System.err.println("❌ AdminController: Update status error - " + e.getMessage());
             return ResponseEntity.badRequest().body(
                     ApiResponse.error("Failed to update user status: " + e.getMessage())
+            );
+        }
+    }
+
+    // Update user role
+    @PutMapping("/users/{userId}/role")
+    public ResponseEntity<ApiResponse<User>> updateUserRole(
+            @PathVariable String userId,
+            @RequestBody Map<String, String> request) {
+        try {
+            String role = request.get("role");
+            System.out.println("🎭 AdminController: Updating user role - " + userId + " to " + role);
+
+            User user = userService.updateUserRole(userId, role);
+
+            return ResponseEntity.ok(
+                    ApiResponse.success("User role updated successfully", user)
+            );
+
+        } catch (Exception e) {
+            System.err.println("❌ AdminController: Update role error - " + e.getMessage());
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.error("Failed to update user role: " + e.getMessage())
             );
         }
     }

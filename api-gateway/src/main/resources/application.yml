@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/auth/**
+        - id: booking-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/bookings/**
+        - id: event-service
+          uri: http://localhost:8082 # Booking service currently handles events too
+          predicates:
+            - Path=/api/v1/events/**
+        - id: admin-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/admin/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway

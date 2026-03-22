@@ -1,17 +1,32 @@
 server:
   port: 8082
 
+stripe:
+  secret:
+    key: ${STRIPE_SECRET_KEY:sk_test_placeholder}
+
 spring:
   application:
     name: booking-api-service
+
+  # MongoDB Atlas (All data storage)
   data:
     mongodb:
-      uri: mongodb://localhost:27017/waygonway_db
+      uri: mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
       auto-index-creation: true
+
+  # Disable H2, JPA, and Redis auto-configurations
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
 
 logging:
   level:
     com.waygonway: DEBUG
-    org.springframework.data.mongodb: DEBUG
+    org.springframework.data.mongodb: INFO
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

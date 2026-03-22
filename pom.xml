@@ -19,6 +19,7 @@
     </parent>
 
     <modules>
+        <module>api-gateway</module>
         <module>auth-admin-service</module>
         <module>booking-api-service</module>
         <module>database-service</module>

@@ -212,6 +212,26 @@ public class UserService {
         }
     }
 
+    // Update user role
+    public User updateUserRole(String userId, String role) {
+        try {
+            System.out.println("🎭 UserService: Updating user role - " + userId + " to " + role);
+
+            User user = getUserById(userId);
+            user.setRole(role.toUpperCase());
+            user.setUpdatedAt(LocalDateTime.now());
+
+            User savedUser = userRepository.save(user);
+            System.out.println("✅ UserService: User role updated - " + savedUser.getUsername());
+
+            return savedUser;
+
+        } catch (Exception e) {
+            System.err.println("❌ UserService: Error updating user role - " + e.getMessage());
+            throw new RuntimeException("Failed to update user role", e);
+        }
+    }
+
     // Get user statistics
     public Map<String, Object> getUserStatistics() {
         try {

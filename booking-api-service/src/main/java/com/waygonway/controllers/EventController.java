@@ -1,88 +1,56 @@
 package com.waygonway.controllers;
 
 import com.waygonway.entities.Event;
-import com.waygonway.services.TrainBookingService;
+import com.waygonway.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/api/v1/events")
 @CrossOrigin(origins = "*")
 public class EventController {
 
     @Autowired
-    private TrainBookingService trainBookingService;
+    private EventRepository eventRepository;
 
-    @GetMapping("/search")
-    public Map<String, Object> searchEvents(@RequestParam String source,
-                                            @RequestParam String destination,
-                                            @RequestParam(required = false) String travelDate) {
-        System.out.println("🔍 Search: " + source + " → " + destination);
-
-        List<Event> trains = trainBookingService.searchTrains(source, destination);
-        List<Map<String, Object>> trainMaps = new ArrayList<>();
-
-        for (Event train : trains) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", train.getId());
-            map.put("eventName", train.getEventName());
-            map.put("eventCode", train.getEventCode());
-            map.put("eventType", train.getEventType());
-            map.put("source", train.getSource());
-            map.put("destination", train.getDestination());
-            map.put("description", train.getDescription());
-            map.put("price", train.getPrice());
-            map.put("totalSeats", train.getTotalSeats());
-            map.put("availableSeats", train.getAvailableSeats());
-            map.put("vehicleNumber", train.getVehicleNumber());
-            map.put("basePrice", train.getBasePrice());
-            trainMaps.add(map);
+    @GetMapping("/paged")
+    public Page<Event> getEventsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String category) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (category != null && !category.isEmpty()) {
+            return eventRepository.findByCategory(category, pageable);
         }
-
-        return Map.of("success", true, "data", trainMaps, "count", trainMaps.size());
+        return eventRepository.findAll(pageable);
     }
 
-    @PostMapping("/create-demo-data")
-    public Map<String, Object> createDemoData() {
-        System.out.println("🚂 Creating demo data...");
+    @GetMapping
+    @Cacheable(value = "eventsCache")
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
+    }
 
-        List<Event> trains = trainBookingService.createDemoData();
-        List<Map<String, Object>> trainMaps = new ArrayList<>();
+    @GetMapping("/category/{category}")
+    @Cacheable(value = "eventsCache", key = "#category")
+    public List<Event> getEventsByCategory(@PathVariable String category) {
+        return eventRepository.findByCategory(category);
+    }
 
-        for (Event train : trains) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", train.getId());
-            map.put("eventName", train.getEventName());
-            map.put("eventCode", train.getEventCode());
-            map.put("source", train.getSource());
-            map.put("destination", train.getDestination());
-            map.put("price", train.getPrice());
-            map.put("availableSeats", train.getAvailableSeats());
-            trainMaps.add(map);
-        }
-
-        return Map.of("success", true, "message", trains.size() + " trains created", "data", trainMaps);
+    @GetMapping("/location/{location}")
+    @Cacheable(value = "eventsCache", key = "#location")
+    public List<Event> getEventsByLocation(@PathVariable String location) {
+        return eventRepository.findByLocation(location);
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> getEventById(@PathVariable String id) {
-        Event event = trainBookingService.getEventById(id);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", event.getId());
-        map.put("eventName", event.getEventName());
-        map.put("eventCode", event.getEventCode());
-        map.put("source", event.getSource());
-        map.put("destination", event.getDestination());
-        map.put("price", event.getPrice());
-        map.put("availableSeats", event.getAvailableSeats());
-
-        return Map.of("success", true, "data", map);
-    }
-
-    @GetMapping("/health")
-    public Map<String, Object> healthCheck() {
-        return Map.of("success", true, "service", "Booking API Service", "status", "Running");
+    public Event getEventById(@PathVariable String id) {
+        return eventRepository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
     }
 }
