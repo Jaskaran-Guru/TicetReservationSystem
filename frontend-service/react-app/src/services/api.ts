@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const AUTH_SERVICE_URL = 'http://localhost:8081';
-const BOOKING_SERVICE_URL = 'http://localhost:8082';
+// Use current origin for API calls to support both localhost and public tunnels
+const GATEWAY_URL = window.location.origin;
+export const AUTH_SERVICE_URL = GATEWAY_URL;
+export const BOOKING_SERVICE_URL = GATEWAY_URL;
 
 // Auth service (port 8081)
 const authAxios = axios.create({
@@ -28,8 +30,8 @@ addAuthInterceptor(authAxios);
 addAuthInterceptor(api);
 
 export const authApi = {
-  login: (credentials: any) => authAxios.post('/auth/login', credentials),
-  register: (userData: any) => authAxios.post('/auth/register', userData),
+  login: (credentials: any) => authAxios.post('/api/v1/auth/login', credentials),
+  register: (userData: any) => authAxios.post('/api/v1/auth/register', userData),
 };
 
 export const bookingApi = {
@@ -70,7 +72,7 @@ export const adminApi = {
 };
 
 export const userApi = {
-  deleteAccount: (userId: string) => api.delete(`/api/v1/users/${userId}`),
+  deleteAccount: (userId: string) => api.delete(`/api/v1/auth/${userId}`),
 };
 
 export const transportApi = {

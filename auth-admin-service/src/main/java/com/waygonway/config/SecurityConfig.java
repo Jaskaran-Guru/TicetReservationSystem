@@ -9,18 +9,22 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
     @Autowired
     private JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("🔒 SecurityConfig: Configuring security for auth-admin service");
+        logger.info("🔒 SecurityConfig: Configuring security for auth-admin service");
 
         http
                 .cors(cors -> cors.configurationSource(request -> {
@@ -34,11 +38,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint((request, response, authException) -> {
-                            System.err.println("❌ 401 Unauthorized: " + authException.getMessage() + " for URI: " + request.getRequestURI());
+                            logger.error("❌ 401 Unauthorized: {} for URI: {}", authException.getMessage(), request.getRequestURI());
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            System.err.println("❌ 403 Forbidden: " + accessDeniedException.getMessage() + " for URI: " + request.getRequestURI());
+                            logger.error("❌ 403 Forbidden: {} for URI: {}", accessDeniedException.getMessage(), request.getRequestURI());
                             response.sendError(HttpServletResponse.SC_FORBIDDEN, accessDeniedException.getMessage());
                         })
                 )
@@ -55,7 +59,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
-        System.out.println("✅ SecurityConfig: Auth-admin service security configured with JWT Filter");
+        logger.info("✅ SecurityConfig: Auth-admin service security configured with JWT Filter");
         return http.build();
     }
 }

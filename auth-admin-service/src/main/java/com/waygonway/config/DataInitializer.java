@@ -6,9 +6,13 @@ import com.waygonway.utils.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -18,11 +22,11 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("🗄️ DataInitializer: Checking for initial data...");
+        logger.info("🗄️ DataInitializer: Checking for initial data...");
 
         // Create admin user if not exists
         if (!userRepository.existsByUsername("admin")) {
-            System.out.println("👑 DataInitializer: Creating default admin user");
+            logger.info("👑 DataInitializer: Creating default admin user");
 
             User admin = new User();
             admin.setUsername("admin");
@@ -43,12 +47,12 @@ public class DataInitializer implements CommandLineRunner {
             admin.setAddress(address);
 
             userRepository.save(admin);
-            System.out.println("✅ DataInitializer: Default admin user created");
+            logger.info("✅ DataInitializer: Default admin user created");
         }
 
         // Create demo user if not exists
         if (!userRepository.existsByUsername("user")) {
-            System.out.println("👤 DataInitializer: Creating demo user");
+            logger.info("👤 DataInitializer: Creating demo user");
 
             User user = new User();
             user.setUsername("user");
@@ -69,11 +73,11 @@ public class DataInitializer implements CommandLineRunner {
             user.setAddress(address);
 
             userRepository.save(user);
-            System.out.println("✅ DataInitializer: Demo user created");
+            logger.info("✅ DataInitializer: Demo user created");
         }
 
         long userCount = userRepository.count();
-        System.out.println("📊 DataInitializer: Total users in database: " + userCount);
-        System.out.println("✅ DataInitializer: Initial data setup completed");
+        logger.info("📊 DataInitializer: Total users in database: {}", userCount);
+        logger.info("✅ DataInitializer: Initial data setup completed");
     }
 }

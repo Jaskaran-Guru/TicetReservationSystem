@@ -11,10 +11,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -26,7 +30,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
         String uri = request.getRequestURI();
         String method = request.getMethod();
-        System.out.println("🔍 JWT Filter: Processing " + method + " " + uri);
+        logger.info("🔍 JWT Filter: Processing {} {}", method, uri);
 
         try {
             String authHeader = request.getHeader("Authorization");
@@ -38,7 +42,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 try {
                     username = jwtUtil.extractUsername(token);
                 } catch (Exception e) {
-                    System.err.println("❌ JWT Error: " + e.getMessage());
+                    logger.error("❌ JWT Error: {}", e.getMessage());
                 }
             }
 
@@ -61,7 +65,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
-            System.err.println("❌ JWT Filter Error: " + e.getMessage());
+            logger.error("❌ JWT Filter Error: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);

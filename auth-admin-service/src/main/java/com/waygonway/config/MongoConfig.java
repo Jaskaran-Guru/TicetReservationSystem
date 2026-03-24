@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import jakarta.annotation.PostConstruct; // ✅ FIXED: jakarta instead of javax
 import java.util.concurrent.TimeUnit;
 

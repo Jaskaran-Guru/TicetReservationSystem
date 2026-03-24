@@ -1,0 +1,17 @@
+# Stage 1: Build
+FROM maven:3.8.4-openjdk-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY auth-admin-service/pom.xml auth-admin-service/
+COPY shared-config/pom.xml shared-config/
+RUN mvn dependency:go-offline -B
+COPY auth-admin-service/src auth-admin-service/src
+COPY shared-config/src shared-config/src
+RUN mvn package -pl auth-admin-service -DskipTests
+
+# Stage 2: Runtime
+FROM openjdk:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/auth-admin-service/target/auth-admin-service-1.0.0.jar app.jar
+EXPOSE 8081
+ENTRYPOINT ["java", "-jar", "app.jar"]

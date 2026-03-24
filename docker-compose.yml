@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # API Gateway (Port 8080)
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-admin-service:8081
+      - BOOKING_SERVICE_URL=http://booking-api-service:8082
+    depends_on:
+      - auth-admin-service
+      - booking-api-service
+
+  # Auth Admin Service (Port 8081)
+  auth-admin-service:
+    build:
+      context: .
+      dockerfile: auth-admin-service/Dockerfile
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
+    ports:
+      - "8081:8081"
+
+  # Booking API Service (Port 8082)
+  booking-api-service:
+    build:
+      context: .
+      dockerfile: booking-api-service/Dockerfile
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
+    ports:
+      - "8082:8082"
+
+  # Database Service (Port 8083)
+  database-service:
+    build:
+      context: .
+      dockerfile: database-service/Dockerfile
+    ports:
+      - "8083:8083"

@@ -2,7 +2,6 @@ package com.waygonway.services;
 
 import com.waygonway.models.User;
 import com.waygonway.repositories.UserRepository;
-import com.waygonway.utils.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +20,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordUtil passwordUtil;
 
     // Get all users
     public List<User> getAllUsers() {

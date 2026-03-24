@@ -33,9 +33,6 @@ public class BookingServiceTest {
     @Mock
     private PaymentService paymentService;
 
-    @Mock
-    private NotificationService notificationService;
-
     @InjectMocks
     private BookingService bookingService;
 

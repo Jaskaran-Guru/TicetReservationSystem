@@ -5,27 +5,66 @@ spring:
   application:
     name: api-gateway
   cloud:
+    discovery:
+      enabled: false
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
       routes:
+        # Auth Admin Service (8081)
         - id: auth-service
-          uri: http://localhost:8081
+          uri: ${AUTH_SERVICE_URL:http://localhost:8081}
           predicates:
             - Path=/api/v1/auth/**
+        - id: admin-user-service
+          uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/v1/admin/users/**, /api/v1/admin/statistics
+        
+        # Booking API Service (8082)
         - id: booking-service
-          uri: http://localhost:8082
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
           predicates:
             - Path=/api/v1/bookings/**
         - id: event-service
-          uri: http://localhost:8082 # Booking service currently handles events too
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
           predicates:
             - Path=/api/v1/events/**
-        - id: admin-service
-          uri: http://localhost:8081
+        - id: admin-event-service
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
           predicates:
-            - Path=/api/v1/admin/**
+            - Path=/api/v1/admin/events/**, /api/v1/admin/dashboard/**
+        - id: transport-service
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/v1/transport/**
+        - id: organizer-service
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/v1/organizer/**
+        - id: support-service
+          uri: ${BOOKING_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/v1/support/**
+
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info,gateway
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
