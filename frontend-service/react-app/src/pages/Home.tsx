@@ -34,11 +34,11 @@ const Home = () => {
       const data = response.data;
       
       if (append) {
-        setEvents(prev => [...prev, ...data.content]);
+        setEvents(prev => [...(prev || []), ...(data?.content || [])]);
       } else {
-        setEvents(data.content);
+        setEvents(data?.content || []);
       }
-      setTotalPages(data.totalPages);
+      setTotalPages(data?.totalPages || 0);
     } catch (error) {
       console.error("Failed to fetch events:", error);
     } finally {
@@ -63,7 +63,7 @@ const Home = () => {
       bookingApi.getEventsPaged(0, 6, apiCategory || undefined).then(res => {
         // Silently sync newest events so buttons show 'Sold Out' instantly without hard refresh
         setEvents(prev => {
-          if (prev.length <= 6) return res.data.content; // only sync if not loaded more
+          if ((prev || []).length <= 6) return res.data?.content || []; // only sync if not loaded more
           return prev;
         });
       }).catch(console.error);
@@ -78,8 +78,8 @@ const Home = () => {
     fetchEvents(nextPage, true);
   };
 
-  const filteredEvents = events.filter(e => {
-    const matchesSearch = !searchQuery || e.eventName.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredEvents = (events || []).filter(e => {
+    const matchesSearch = !searchQuery || e.eventName?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
 
