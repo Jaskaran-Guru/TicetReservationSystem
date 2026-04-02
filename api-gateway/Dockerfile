@@ -15,14 +15,12 @@ COPY api-gateway/pom.xml api-gateway/
 COPY auth-admin-service/pom.xml auth-admin-service/
 COPY booking-api-service/pom.xml booking-api-service/
 COPY database-service/pom.xml database-service/
-COPY shared-config/pom.xml shared-config/
 
 # Build dependencies
 RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY api-gateway/src api-gateway/src
-COPY shared-config/src shared-config/src
 
 # Copy frontend build to api-gateway static resources
 COPY --from=frontend-build /app/dist /app/api-gateway/src/main/resources/static

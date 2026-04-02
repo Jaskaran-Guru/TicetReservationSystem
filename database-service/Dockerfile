@@ -3,10 +3,8 @@ FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY database-service/pom.xml database-service/
-COPY shared-config/pom.xml shared-config/
 RUN mvn dependency:go-offline -B
 COPY database-service/src database-service/src
-COPY shared-config/src shared-config/src
 RUN mvn package -pl database-service -DskipTests
 
 # Stage 2: Runtime
