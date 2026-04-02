@@ -19,7 +19,7 @@ services:
         value: http://database-service:8083
     
   # Auth Admin Service
-  - type: pvt
+  - type: pserv
     name: auth-admin-service
     env: docker
     dockerContext: .
@@ -38,7 +38,7 @@ services:
         value: WaygonWaySecretKeyForTokenGeneration2024!@#$%
 
   # Booking API Service
-  - type: pvt
+  - type: pserv
     name: booking-api-service
     env: docker
     dockerContext: .
@@ -60,7 +60,7 @@ services:
         value: sk_test_placeholder
 
   # Database Service
-  - type: pvt
+  - type: pserv
     name: database-service
     env: docker
     dockerContext: .
