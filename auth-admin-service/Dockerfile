@@ -3,6 +3,10 @@ FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY auth-admin-service/pom.xml auth-admin-service/
+COPY frontend-service/pom.xml frontend-service/
+COPY booking-api-service/pom.xml booking-api-service/
+COPY database-service/pom.xml database-service/
+COPY api-gateway/pom.xml api-gateway/
 RUN mvn dependency:go-offline -B
 COPY auth-admin-service/src auth-admin-service/src
 RUN mvn package -pl auth-admin-service -DskipTests

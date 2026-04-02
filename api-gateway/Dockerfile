@@ -15,6 +15,7 @@ COPY api-gateway/pom.xml api-gateway/
 COPY auth-admin-service/pom.xml auth-admin-service/
 COPY booking-api-service/pom.xml booking-api-service/
 COPY database-service/pom.xml database-service/
+COPY frontend-service/pom.xml frontend-service/
 
 # Build dependencies
 RUN mvn dependency:go-offline -B
