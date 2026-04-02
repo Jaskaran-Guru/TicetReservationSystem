@@ -10,7 +10,7 @@ COPY shared-config/src shared-config/src
 RUN mvn package -pl auth-admin-service -DskipTests
 
 # Stage 2: Runtime
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/auth-admin-service/target/auth-admin-service-1.0.0.jar app.jar
 EXPOSE 8081

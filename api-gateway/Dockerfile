@@ -31,7 +31,7 @@ COPY --from=frontend-build /app/dist /app/api-gateway/src/main/resources/static
 RUN mvn package -pl api-gateway -DskipTests
 
 # Stage 3: Runtime
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=backend-build /app/api-gateway/target/api-gateway-1.0.0.jar app.jar
 EXPOSE 8080
