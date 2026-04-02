@@ -10,7 +10,8 @@ spring:
 
   data:
     mongodb:
-      database: train_reservation_db
+      uri: ${MONGODB_URI:mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority}
+      database: ${MONGODB_DATABASE:train_reservation_db}
 
 logging:
   level:
