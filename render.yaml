@@ -19,13 +19,14 @@ services:
         value: http://database-service:8083
     
   # Auth Admin Service
-  - type: pserv
+  - type: web
     name: auth-admin-service
     env: docker
     dockerContext: .
     dockerfilePath: auth-admin-service/Dockerfile
     plan: free
     region: singapore
+    healthCheckPath: /actuator/health
     envVars:
       - key: PORT
         value: 8081
@@ -35,13 +36,14 @@ services:
         value: WaygonWaySecretKeyForTokenGeneration2024!@#$%
 
   # Booking API Service
-  - type: pserv
+  - type: web
     name: booking-api-service
     env: docker
     dockerContext: .
     dockerfilePath: booking-api-service/Dockerfile
     plan: free
     region: singapore
+    healthCheckPath: /actuator/health
     envVars:
       - key: PORT
         value: 8082
@@ -53,13 +55,14 @@ services:
         value: sk_test_placeholder
 
   # Database Service
-  - type: pserv
+  - type: web
     name: database-service
     env: docker
     dockerContext: .
     dockerfilePath: database-service/Dockerfile
     plan: free
     region: singapore
+    healthCheckPath: /actuator/health
     envVars:
       - key: PORT
         value: 8083
