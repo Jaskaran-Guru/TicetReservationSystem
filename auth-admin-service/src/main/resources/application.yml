@@ -40,6 +40,7 @@ jwt:
 logging:
   level:
     com.waygonway: DEBUG
+    org.springframework: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web: INFO
     org.springframework.data.mongodb: DEBUG

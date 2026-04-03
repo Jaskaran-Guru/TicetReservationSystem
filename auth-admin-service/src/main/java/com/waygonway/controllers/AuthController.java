@@ -33,6 +33,17 @@ public class AuthController {
         );
     }
 
+    // Ping check
+    @GetMapping("/ping")
+    public Map<String, Object> ping() {
+        return Map.of(
+            "status", "UP",
+            "message", "Auth Admin Service is reachable",
+            "timestamp", java.time.LocalDateTime.now().toString(),
+            "service", "auth-admin-service"
+        );
+    }
+
     // User login
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest loginRequest) {
