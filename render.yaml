@@ -43,7 +43,6 @@ services:
     dockerfilePath: booking-api-service/Dockerfile
     plan: free
     region: singapore
-    healthCheckStatus: live
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
