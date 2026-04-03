@@ -3,7 +3,6 @@ package com.waygonway.controllers;
 import com.waygonway.entities.Event;
 import com.waygonway.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,19 +31,16 @@ public class EventController {
     }
 
     @GetMapping
-    @Cacheable(value = "eventsCache")
     public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
     @GetMapping("/category/{category}")
-    @Cacheable(value = "eventsCache", key = "#category")
     public List<Event> getEventsByCategory(@PathVariable String category) {
         return eventRepository.findByCategory(category);
     }
 
     @GetMapping("/location/{location}")
-    @Cacheable(value = "eventsCache", key = "#location")
     public List<Event> getEventsByLocation(@PathVariable String location) {
         return eventRepository.findByLocation(location);
     }
