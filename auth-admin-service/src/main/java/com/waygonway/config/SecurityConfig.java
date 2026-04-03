@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/health").permitAll()
                         .requestMatchers("/health").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         // Admin endpoints - PROTECTED
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
