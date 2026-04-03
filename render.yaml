@@ -31,9 +31,9 @@ services:
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        value: mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
+        sync: false # Set in Render UI for safety
       - key: JWT_SECRET
-        value: WaygonWaySecretKeyForTokenGeneration2024!@#$%
+        sync: false # Set in Render UI for safety
 
   # Booking API Service
   - type: web
@@ -48,11 +48,11 @@ services:
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        value: mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
+        sync: false
       - key: JWT_SECRET
-        value: WaygonWaySecretKeyForTokenGeneration2024!@#$%
+        sync: false
       - key: STRIPE_SECRET_KEY
-        value: sk_test_placeholder
+        sync: false
 
   # Database Service
   - type: web
