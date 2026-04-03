@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
-import jakarta.annotation.PostConstruct; // ✅ FIXED: jakarta instead of javax
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -63,21 +62,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
         System.out.println("✅ MongoConfig: MongoTemplate created successfully");
         return template;
-    }
-
-    @PostConstruct // ✅ NOW WORKS
-    public void init() {
-        System.out.println("🗄️ MongoConfig: Initializing MongoDB configuration");
-        System.out.println("📊 Database: " + getDatabaseName());
-        System.out.println("🔗 URI: " + connectionString);
-
-        try {
-            // Test connection
-            mongoClient().getDatabase(getDatabaseName()).runCommand(org.bson.Document.parse("{ ping: 1 }"));
-            System.out.println("✅ MongoConfig: Database connection successful");
-        } catch (Exception e) {
-            System.err.println("❌ MongoConfig: Database connection failed - " + e.getMessage());
-        }
     }
 
     @Override

@@ -1,12 +1,12 @@
 services:
-  # API Gateway & Integrated React Frontend
+  # API Gateway
   - type: web
     name: api-gateway
     env: docker
     dockerContext: .
     dockerfilePath: api-gateway/Dockerfile
-    plan: free # Change to standard/pro for production
-    region: singapore # Using Singapore for better latency in Asia
+    plan: free
+    region: singapore
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
@@ -17,7 +17,7 @@ services:
         value: http://booking-api-service:10000
       - key: DATABASE_SERVICE_URL
         value: http://database-service:10000
-    
+
   # Auth Admin Service
   - type: web
     name: auth-admin-service
@@ -31,9 +31,9 @@ services:
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        sync: false # Set in Render UI for safety
+        sync: false
       - key: JWT_SECRET
-        sync: false # Set in Render UI for safety
+        sync: false
 
   # Booking API Service
   - type: web
@@ -43,6 +43,7 @@ services:
     dockerfilePath: booking-api-service/Dockerfile
     plan: free
     region: singapore
+    healthCheckStatus: live
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
@@ -66,3 +67,5 @@ services:
     envVars:
       - key: PORT
         value: 10000
+      - key: MONGODB_URI
+        sync: false
