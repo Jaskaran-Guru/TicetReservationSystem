@@ -12,11 +12,11 @@ services:
       - key: PORT
         value: 10000
       - key: AUTH_SERVICE_URL
-        value: http://auth-admin-service:10000
+        value: http://auth-admin-service.render.internal:10000
       - key: BOOKING_SERVICE_URL
-        value: http://booking-api-service:10000
+        value: http://booking-api-service.render.internal:10000
       - key: DATABASE_SERVICE_URL
-        value: http://database-service:10000
+        value: http://database-service.render.internal:10000
 
   # Auth Admin Service
   - type: web
