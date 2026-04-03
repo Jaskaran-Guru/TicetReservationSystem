@@ -10,13 +10,13 @@ services:
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
-        value: 8080
+        value: 10000
       - key: AUTH_SERVICE_URL
-        value: http://auth-admin-service:8081
+        value: http://auth-admin-service:10000
       - key: BOOKING_SERVICE_URL
-        value: http://booking-api-service:8082
+        value: http://booking-api-service:10000
       - key: DATABASE_SERVICE_URL
-        value: http://database-service:8083
+        value: http://database-service:10000
     
   # Auth Admin Service
   - type: web
@@ -29,7 +29,7 @@ services:
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
-        value: 8081
+        value: 10000
       - key: MONGODB_URI
         value: mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
       - key: JWT_SECRET
@@ -46,7 +46,7 @@ services:
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
-        value: 8082
+        value: 10000
       - key: MONGODB_URI
         value: mongodb+srv://gurujaskaran2006_db_user:123@cluster0.imdqenc.mongodb.net/waygonway_db?retryWrites=true&w=majority
       - key: JWT_SECRET
@@ -65,4 +65,4 @@ services:
     healthCheckPath: /actuator/health
     envVars:
       - key: PORT
-        value: 8083
+        value: 10000

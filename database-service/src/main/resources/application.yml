@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: ${PORT:10000}
 
 spring:
   application:
@@ -16,3 +16,18 @@ spring:
 logging:
   level:
     com.waygonway.database: DEBUG
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    mongo:
+      enabled: false  # Allow service to report UP even if MongoDB is still connecting

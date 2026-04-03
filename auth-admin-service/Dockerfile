@@ -15,5 +15,5 @@ RUN mvn package -pl auth-admin-service -DskipTests
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/auth-admin-service/target/auth-admin-service-1.0.0.jar app.jar
-EXPOSE 8081
+EXPOSE 10000
 ENTRYPOINT ["java", "-jar", "app.jar"]

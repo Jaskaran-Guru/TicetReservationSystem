@@ -15,5 +15,5 @@ RUN mvn package -pl booking-api-service -DskipTests
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/booking-api-service/target/booking-api-service-1.0.0.jar app.jar
-EXPOSE 8082
+EXPOSE 10000
 ENTRYPOINT ["java", "-jar", "app.jar"]

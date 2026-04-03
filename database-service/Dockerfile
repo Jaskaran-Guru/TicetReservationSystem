@@ -15,5 +15,5 @@ RUN mvn package -pl database-service -DskipTests
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/database-service/target/database-service-1.0.0.jar app.jar
-EXPOSE 8083
+EXPOSE 10000
 ENTRYPOINT ["java", "-jar", "app.jar"]
